@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SalonScheduler.API.Data;
 using SalonScheduler.API.DTOs;
 using SalonScheduler.API.Models;
+using SalonScheduler.API.Services;
 
 namespace SalonScheduler.API.Controllers;
 
@@ -12,10 +13,12 @@ namespace SalonScheduler.API.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    private readonly JwtService _jwtService;
 
-    public AuthController(ApplicationDbContext context)
+    public AuthController(ApplicationDbContext context, JwtService jwtService)
     {
         _context = context;
+        _jwtService = jwtService;
     }
 
     [HttpPost("register")]
@@ -58,20 +61,18 @@ public class AuthController : ControllerBase
             .FirstOrDefaultAsync(u => u.Email == request.Email);
 
         if (user == null)
-        {
-            return BadRequest("Invalid email or password.");
-        }
+            return BadRequest("Invalid email or password");
 
-        var isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
+        var validPassword = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
 
-        if (!isPasswordValid)
-        {
-            return BadRequest("Invalid email or password.");
-        }
+        if (!validPassword)
+            return BadRequest("Invalid email or password");
+
+        var token = _jwtService.GenerateToken(user);
 
         return Ok(new
         {
-            message = "Login successful",
+            token,
             userId = user.Id,
             email = user.Email,
             role = user.Role
