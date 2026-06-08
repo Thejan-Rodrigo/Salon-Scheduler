@@ -1,5 +1,6 @@
 using BCrypt.Net;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SalonScheduler.API.Data;
 using SalonScheduler.API.DTOs;
 using SalonScheduler.API.Models;
@@ -47,6 +48,33 @@ public class AuthController : ControllerBase
         return Ok(new
         {
             Message = "User registered successfully"
+        });
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    {
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == request.Email);
+
+        if (user == null)
+        {
+            return BadRequest("Invalid email or password.");
+        }
+
+        var isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
+
+        if (!isPasswordValid)
+        {
+            return BadRequest("Invalid email or password.");
+        }
+
+        return Ok(new
+        {
+            message = "Login successful",
+            userId = user.Id,
+            email = user.Email,
+            role = user.Role
         });
     }
 }
