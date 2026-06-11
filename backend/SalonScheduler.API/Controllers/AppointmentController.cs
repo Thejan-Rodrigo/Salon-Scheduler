@@ -30,7 +30,7 @@ public class AppointmentController : ControllerBase
         var appointment = new Appointment
         {
             Id = Guid.NewGuid(),
-            UserId = Guid.Parse(userId),
+            CustomerId = Guid.Parse(userId),
             ServiceId = request.ServiceId,
             AppointmentDate = request.AppointmentDate,
             Status = "Pending"
