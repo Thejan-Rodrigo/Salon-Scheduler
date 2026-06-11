@@ -15,6 +15,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Service> Services { get; set; }
     public DbSet<Appointment> Appointments { get; set; }
 
+    public DbSet<Staff> Staff { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>()
