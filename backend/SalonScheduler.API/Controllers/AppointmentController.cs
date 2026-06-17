@@ -80,4 +80,38 @@ public class AppointmentController : ControllerBase
             appointment.Id
         });
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> CancelAppointment(Guid id)
+    {
+        // Get logged-in user id
+        var userId = User.Claims
+            .FirstOrDefault(c => c.Type ==
+                System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId == null)
+            return Unauthorized();
+
+        var customerId = Guid.Parse(userId);
+
+        // Find appointment
+        var appointment = await _context.Appointments
+            .FirstOrDefaultAsync(a =>
+                a.Id == id &&
+                a.CustomerId == customerId);
+
+        if (appointment == null)
+        {
+            return NotFound("Appointment not found");
+        }
+
+        _context.Appointments.Remove(appointment);
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new
+        {
+            message = "Appointment cancelled successfully"
+        });
+    }
 }
