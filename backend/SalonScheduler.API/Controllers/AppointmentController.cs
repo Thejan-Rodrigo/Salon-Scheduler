@@ -53,6 +53,38 @@ public class AppointmentController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("all")]
+    public async Task<IActionResult> GetAllAppointments()
+    {
+        var appointments = await _context.Appointments
+            .Include(a => a.Customer)
+            .Include(a => a.Staff)
+            .Include(a => a.Service)
+            .OrderBy(a => a.StartTime)
+            .ToListAsync();
+
+        var result = appointments.Select(a => new AppointmentAdminResponse
+        {
+            Id = a.Id,
+
+            CustomerName =
+                a.Customer.FirstName + " " + a.Customer.LastName,
+
+            StaffName =
+                a.Staff.FirstName + " " + a.Staff.LastName,
+
+            ServiceName = a.Service.Name,
+
+            StartTime = a.StartTime,
+
+            EndTime = a.EndTime,
+
+            Status = a.Status
+        });
+
+        return Ok(result);
+    }
+
     [HttpPost]
     public async Task<IActionResult> BookAppointment([FromBody] CreateAppointmentRequest request)
     {
@@ -67,7 +99,10 @@ public class AppointmentController : ControllerBase
             Id = Guid.NewGuid(),
             CustomerId = Guid.Parse(userId),
             ServiceId = request.ServiceId,
+            StaffId = request.StaffId,
             AppointmentDate = request.AppointmentDate,
+            StartTime = request.StartTime,
+            EndTime = request.EndTime,
             Status = "Pending"
         };
 
