@@ -105,7 +105,7 @@ public class AppointmentController : ControllerBase
             return NotFound("Appointment not found");
         }
 
-        _context.Appointments.Remove(appointment);
+        appointment.Status = AppointmentStatus.Cancelled;
 
         await _context.SaveChangesAsync();
 
