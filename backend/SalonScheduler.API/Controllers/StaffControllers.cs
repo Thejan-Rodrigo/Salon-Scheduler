@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalonScheduler.API.Data;
 using SalonScheduler.API.Models;
+using SalonScheduler.API.DTOs;
 
 namespace SalonScheduler.API.Controllers;
 
@@ -25,7 +26,51 @@ public class StaffController : ControllerBase
         return Ok(staff);
     }
 
-  [HttpPost]
+    [HttpGet("{staffId}/availability")]
+    public async Task<IActionResult> GetAvailability(
+        Guid staffId,
+        DateTime date)
+    {
+        // Working hours
+        var workStart = date.Date.AddHours(9);
+        var workEnd = date.Date.AddHours(17);
+
+        // Existing appointments
+        var appointments = await _context.Appointments
+            .Where(a =>
+                a.StaffId == staffId &&
+                a.StartTime.Date == date.Date &&
+                a.Status != "Cancelled")
+            .ToListAsync();
+
+        var availableSlots = new List<string>();
+
+        var current = workStart;
+
+        while (current < workEnd)
+        {
+            var slotEnd = current.AddMinutes(30);
+
+            var overlap = appointments.Any(a =>
+                current < a.EndTime &&
+                slotEnd > a.StartTime);
+
+            if (!overlap)
+            {
+                availableSlots.Add(
+                    current.ToString("HH:mm"));
+            }
+
+            current = current.AddMinutes(30);
+        }
+
+        return Ok(new AvailabilityResponse
+        {
+            AvailableSlots = availableSlots
+        });
+    }
+
+    [HttpPost]
     public async Task<IActionResult> CreateStaff(
         [FromBody] CreateStaffRequest request)
     {
