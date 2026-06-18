@@ -14,8 +14,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Service> Services { get; set; }
     public DbSet<Appointment> Appointments { get; set; }
-
     public DbSet<Staff> Staff { get; set; }
+    public DbSet<StaffSchedule> StaffSchedules { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

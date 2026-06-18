@@ -31,9 +31,27 @@ public class StaffController : ControllerBase
         Guid staffId,
         DateTime date)
     {
+        var schedule = await _context.StaffSchedules
+            .FirstOrDefaultAsync(s =>
+                s.StaffId == staffId &&
+                s.DayOfWeek == date.DayOfWeek &&
+                s.IsWorkingDay);
+
+        if (schedule == null)
+        {
+            return Ok(new AvailabilityResponse
+            {
+                AvailableSlots = new List<string>()
+            });
+        }
+
+
         // Working hours
-        var workStart = date.Date.AddHours(9);
-        var workEnd = date.Date.AddHours(17);
+        var workStart =
+            date.Date.Add(schedule.StartTime);
+
+        var workEnd =
+            date.Date.Add(schedule.EndTime);
 
         // Existing appointments
         var appointments = await _context.Appointments
