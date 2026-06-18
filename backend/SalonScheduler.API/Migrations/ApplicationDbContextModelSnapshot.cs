@@ -112,6 +112,34 @@ namespace SalonScheduler.API.Migrations
                     b.ToTable("Staff");
                 });
 
+            modelBuilder.Entity("SalonScheduler.API.Models.StaffSchedule", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time(6)");
+
+                    b.Property<bool>("IsWorkingDay")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("StaffId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StaffId");
+
+                    b.ToTable("StaffSchedules");
+                });
+
             modelBuilder.Entity("SalonScheduler.API.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -182,6 +210,17 @@ namespace SalonScheduler.API.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Service");
+
+                    b.Navigation("Staff");
+                });
+
+            modelBuilder.Entity("SalonScheduler.API.Models.StaffSchedule", b =>
+                {
+                    b.HasOne("SalonScheduler.API.Models.Staff", "Staff")
+                        .WithMany()
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Staff");
                 });

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SalonScheduler.API.Data;
 using SalonScheduler.API.Models;
 using SalonScheduler.API.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SalonScheduler.API.Controllers;
 
@@ -88,6 +89,7 @@ public class StaffController : ControllerBase
         });
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateStaff(
         [FromBody] CreateStaffRequest request)

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using SalonScheduler.API.Data;
 using SalonScheduler.API.DTOs;
 using SalonScheduler.API.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SalonScheduler.API.Controllers;
 
@@ -17,6 +18,7 @@ public class StaffScheduleController : ControllerBase
         _context = context;
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateSchedule(
         [FromBody] CreateStaffScheduleRequest request)

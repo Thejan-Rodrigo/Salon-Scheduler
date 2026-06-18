@@ -53,6 +53,7 @@ public class AppointmentController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpGet("all")]
     public async Task<IActionResult> GetAllAppointments()
     {
@@ -116,6 +117,7 @@ public class AppointmentController : ControllerBase
         });
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}/status")]
     public async Task<IActionResult> UpdateStatus(
         Guid id,

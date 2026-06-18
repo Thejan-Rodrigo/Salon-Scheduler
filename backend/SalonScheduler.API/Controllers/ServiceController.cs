@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using SalonScheduler.API.Data;
 using SalonScheduler.API.Models;
 
@@ -25,7 +26,8 @@ public class ServiceController : ControllerBase
         return Ok(services);
     }
 
-  [HttpPost]
+    [Authorize(Roles = "Admin")]
+    [HttpPost]
     public async Task<IActionResult> CreateService(
         [FromBody] CreateServiceRequest request)
     {
