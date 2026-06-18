@@ -116,6 +116,44 @@ public class AppointmentController : ControllerBase
         });
     }
 
+    [HttpPut("{id}/status")]
+    public async Task<IActionResult> UpdateStatus(
+        Guid id,
+        [FromBody] UpdateAppointmentStatusRequest request)
+    {
+        var appointment = await _context.Appointments
+            .FirstOrDefaultAsync(a => a.Id == id);
+
+        if (appointment == null)
+        {
+            return NotFound("Appointment not found");
+        }
+
+        var validStatuses = new[]
+        {
+            AppointmentStatus.Pending,
+            AppointmentStatus.Confirmed,
+            AppointmentStatus.Completed,
+            AppointmentStatus.Cancelled
+        };
+
+        if (!validStatuses.Contains(request.Status))
+        {
+            return BadRequest("Invalid status");
+        }
+
+        appointment.Status = request.Status;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new
+        {
+            message = "Appointment status updated successfully",
+            appointment.Id,
+            appointment.Status
+        });
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> CancelAppointment(Guid id)
     {
