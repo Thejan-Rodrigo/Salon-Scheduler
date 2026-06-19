@@ -93,6 +93,42 @@ public class AppointmentController : ControllerBase
         return Ok(response);
     }
 
+    [HttpGet("today")]
+    public async Task<IActionResult> GetTodayAppointments()
+    {
+        var today = DateTime.Today;
+
+        var appointments = await _context.Appointments
+            .Include(a => a.Customer)
+            .Include(a => a.Staff)
+            .Include(a => a.Service)
+            .Where(a => a.StartTime.Date == today)
+            .OrderBy(a => a.StartTime)
+            .Select(a => new TodayAppointmentResponse
+            {
+                Id = a.Id,
+
+                CustomerName =
+                    a.Customer.FirstName + " " +
+                    a.Customer.LastName,
+
+                StaffName =
+                    a.Staff.FirstName + " " +
+                    a.Staff.LastName,
+
+                ServiceName = a.Service.Name,
+
+                StartTime = a.StartTime,
+
+                EndTime = a.EndTime,
+
+                Status = a.Status
+            })
+            .ToListAsync();
+
+        return Ok(appointments);
+    }
+
     [Authorize(Roles = "Admin")]
     [HttpGet("all")]
     public async Task<IActionResult> GetAllAppointments()
