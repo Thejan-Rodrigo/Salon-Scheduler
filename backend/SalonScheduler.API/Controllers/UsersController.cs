@@ -35,4 +35,31 @@ public class UsersController : ControllerBase
 
         return Ok(users);
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetUser(Guid id)
+    {
+        var user = await _context.Users
+            .Where(u => u.Id == id)
+            .Select(u => new
+            {
+                u.Id,
+                u.FirstName,
+                u.LastName,
+                u.Email,
+                u.PhoneNumber,
+                u.Role,
+                u.IsActive,
+                u.CreatedAt,
+                u.UpdatedAt
+            })
+            .FirstOrDefaultAsync();
+
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
+
+        return Ok(user);
+    }
 }
