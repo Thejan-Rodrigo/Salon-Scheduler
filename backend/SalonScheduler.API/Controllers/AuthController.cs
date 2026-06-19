@@ -63,6 +63,11 @@ public class AuthController : ControllerBase
         if (user == null)
             return BadRequest("Invalid email or password");
 
+        if (!user.IsActive)
+        {
+            return BadRequest("Account is inactive");
+        }
+
         var validPassword = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
 
         if (!validPassword)
