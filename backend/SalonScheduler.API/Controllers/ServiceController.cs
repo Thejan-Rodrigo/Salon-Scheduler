@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using SalonScheduler.API.Data;
 using SalonScheduler.API.Models;
+using SalonScheduler.API.DTOs;
 
 namespace SalonScheduler.API.Controllers;
 
@@ -62,5 +63,27 @@ public class ServiceController : ControllerBase
             new { id = service.Id },
             service
         );
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateService(
+        Guid id,
+        [FromBody] UpdateServiceRequest request)
+    {
+        var service = await _context.Services
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (service == null)
+        {
+            return NotFound("Service not found");
+        }
+
+        service.Name = request.Name;
+        service.Price = request.Price;
+        service.DurationMinutes = request.DurationMinutes;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(service);
     }
 }
