@@ -74,4 +74,25 @@ public class StaffScheduleController : ControllerBase
 
         return Ok(schedule);
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteSchedule(Guid id)
+    {
+        var schedule = await _context.StaffSchedules
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (schedule == null)
+        {
+            return NotFound("Schedule not found");
+        }
+
+        _context.StaffSchedules.Remove(schedule);
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new
+        {
+            message = "Schedule deleted successfully"
+        });
+    }
 }
