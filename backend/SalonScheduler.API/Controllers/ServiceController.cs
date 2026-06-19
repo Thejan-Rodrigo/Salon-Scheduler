@@ -86,4 +86,25 @@ public class ServiceController : ControllerBase
 
         return Ok(service);
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteService(Guid id)
+    {
+        var service = await _context.Services
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (service == null)
+        {
+            return NotFound("Service not found");
+        }
+
+        _context.Services.Remove(service);
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new
+        {
+            message = "Service deleted successfully"
+        });
+    }
 }
