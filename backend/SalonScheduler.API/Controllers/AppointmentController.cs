@@ -53,6 +53,46 @@ public class AppointmentController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetAppointment(Guid id)
+    {
+        var appointment = await _context.Appointments
+            .Include(a => a.Customer)
+            .Include(a => a.Staff)
+            .Include(a => a.Service)
+            .FirstOrDefaultAsync(a => a.Id == id);
+
+        if (appointment == null)
+        {
+            return NotFound("Appointment not found");
+        }
+
+        var response = new AppointmentDetailsResponse
+        {
+            Id = appointment.Id,
+
+            CustomerName =
+                $"{appointment.Customer.FirstName} {appointment.Customer.LastName}",
+
+            StaffName =
+                $"{appointment.Staff.FirstName} {appointment.Staff.LastName}",
+
+            ServiceName = appointment.Service.Name,
+
+            ServicePrice = appointment.Service.Price,
+
+            AppointmentDate = appointment.AppointmentDate,
+
+            StartTime = appointment.StartTime,
+
+            EndTime = appointment.EndTime,
+
+            Status = appointment.Status
+        };
+
+        return Ok(response);
+    }
+
     [Authorize(Roles = "Admin")]
     [HttpGet("all")]
     public async Task<IActionResult> GetAllAppointments()
