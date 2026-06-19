@@ -35,6 +35,12 @@ public class StaffScheduleController : ControllerBase
     public async Task<IActionResult> CreateSchedule(
         [FromBody] CreateStaffScheduleRequest request)
     {
+        if (request.StartTime >= request.EndTime)
+        {
+            return BadRequest(
+                "Start time must be earlier than end time");
+        }
+
         var schedule = new StaffSchedule
         {
             Id = Guid.NewGuid(),
@@ -63,6 +69,12 @@ public class StaffScheduleController : ControllerBase
         if (schedule == null)
         {
             return NotFound("Schedule not found");
+        }
+
+        if (request.StartTime >= request.EndTime)
+        {
+            return BadRequest(
+                "Start time must be earlier than end time");
         }
 
         schedule.DayOfWeek = request.DayOfWeek;
