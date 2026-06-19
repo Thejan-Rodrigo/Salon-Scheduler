@@ -26,6 +26,20 @@ public class ServiceController : ControllerBase
         return Ok(services);
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetService(Guid id)
+    {
+        var service = await _context.Services
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (service == null)
+        {
+            return NotFound("Service not found");
+        }
+
+        return Ok(service);
+    }
+
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateService(
