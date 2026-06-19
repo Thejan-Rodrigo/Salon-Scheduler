@@ -51,4 +51,27 @@ public class StaffScheduleController : ControllerBase
 
         return Ok(schedule);
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateSchedule(
+        Guid id,
+        [FromBody] UpdateStaffScheduleRequest request)
+    {
+        var schedule = await _context.StaffSchedules
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (schedule == null)
+        {
+            return NotFound("Schedule not found");
+        }
+
+        schedule.DayOfWeek = request.DayOfWeek;
+        schedule.StartTime = request.StartTime;
+        schedule.EndTime = request.EndTime;
+        schedule.IsWorkingDay = request.IsWorkingDay;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(schedule);
+    }
 }
