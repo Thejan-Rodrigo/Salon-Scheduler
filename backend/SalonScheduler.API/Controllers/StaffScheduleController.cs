@@ -3,6 +3,7 @@ using SalonScheduler.API.Data;
 using SalonScheduler.API.DTOs;
 using SalonScheduler.API.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace SalonScheduler.API.Controllers;
 
@@ -16,6 +17,17 @@ public class StaffScheduleController : ControllerBase
         ApplicationDbContext context)
     {
         _context = context;
+    }
+
+    [HttpGet("{staffId}")]
+    public async Task<IActionResult> GetSchedules(Guid staffId)
+    {
+        var schedules = await _context.StaffSchedules
+            .Where(s => s.StaffId == staffId)
+            .OrderBy(s => s.DayOfWeek)
+            .ToListAsync();
+
+        return Ok(schedules);
     }
 
     [Authorize(Roles = "Admin")]
