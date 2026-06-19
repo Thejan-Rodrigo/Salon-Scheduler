@@ -27,6 +27,20 @@ public class StaffController : ControllerBase
         return Ok(staff);
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetStaff(Guid id)
+    {
+        var staff = await _context.Staff
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (staff == null)
+        {
+            return NotFound("Staff member not found");
+        }
+
+        return Ok(staff);
+    }
+
     [HttpGet("{staffId}/availability")]
     public async Task<IActionResult> GetAvailability(
         Guid staffId,
