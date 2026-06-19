@@ -150,4 +150,24 @@ public class StaffController : ControllerBase
 
         return Ok(staff);
     }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteStaff(Guid id)
+    {
+        var staff = await _context.Staff
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (staff == null)
+        {
+            return NotFound("Staff member not found");
+        }
+
+        staff.IsActive = false;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new
+        {
+            message = "Staff member deactivated successfully"
+        });
+    }
 }
