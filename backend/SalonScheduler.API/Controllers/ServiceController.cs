@@ -98,13 +98,13 @@ public class ServiceController : ControllerBase
             return NotFound("Service not found");
         }
 
-        _context.Services.Remove(service);
+        service.IsActive = false;
 
         await _context.SaveChangesAsync();
 
         return Ok(new
         {
-            message = "Service deleted successfully"
+            message = "Service deactivated successfully"
         });
     }
 }
