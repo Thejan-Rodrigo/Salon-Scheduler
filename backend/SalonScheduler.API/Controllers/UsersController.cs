@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SalonScheduler.API.Data;
+using SalonScheduler.API.DTOs;
 
 namespace SalonScheduler.API.Controllers;
 
@@ -61,5 +62,31 @@ public class UsersController : ControllerBase
         }
 
         return Ok(user);
+    }
+
+    [HttpPut("{id}/status")]
+    public async Task<IActionResult> UpdateUserStatus(
+        Guid id,
+        [FromBody] UpdateUserStatusRequest request)
+    {
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Id == id);
+
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
+
+        user.IsActive = request.IsActive;
+        user.UpdatedAt = DateTime.UtcNow;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new
+        {
+            message = "User status updated successfully",
+            user.Id,
+            user.IsActive
+        });
     }
 }
