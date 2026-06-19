@@ -105,6 +105,43 @@ public class StaffController : ControllerBase
         });
     }
 
+    [HttpGet("{staffId}/appointments")]
+    public async Task<IActionResult> GetStaffAppointments(Guid staffId)
+    {
+        var staffExists = await _context.Staff
+            .AnyAsync(s => s.Id == staffId);
+
+        if (!staffExists)
+        {
+            return NotFound("Staff member not found");
+        }
+
+        var appointments = await _context.Appointments
+            .Include(a => a.Customer)
+            .Include(a => a.Service)
+            .Where(a => a.StaffId == staffId)
+            .OrderBy(a => a.StartTime)
+            .Select(a => new StaffAppointmentResponse
+            {
+                Id = a.Id,
+
+                CustomerName =
+                    a.Customer.FirstName + " " +
+                    a.Customer.LastName,
+
+                ServiceName = a.Service.Name,
+
+                StartTime = a.StartTime,
+
+                EndTime = a.EndTime,
+
+                Status = a.Status
+            })
+            .ToListAsync();
+
+        return Ok(appointments);
+    }
+
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateStaff(
