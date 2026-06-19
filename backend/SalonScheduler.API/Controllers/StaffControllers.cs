@@ -127,4 +127,27 @@ public class StaffController : ControllerBase
             staff
         );
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateStaff(
+        Guid id,
+        [FromBody] UpdateStaffRequest request)
+    {
+        var staff = await _context.Staff
+            .FirstOrDefaultAsync(s => s.Id == id);
+
+        if (staff == null)
+        {
+            return NotFound("Staff member not found");
+        }
+
+        staff.FirstName = request.FirstName;
+        staff.LastName = request.LastName;
+        staff.Email = request.Email;
+        staff.PhoneNumber = request.PhoneNumber;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(staff);
+    }
 }
