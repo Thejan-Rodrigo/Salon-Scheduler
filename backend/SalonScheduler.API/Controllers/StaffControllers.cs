@@ -22,7 +22,9 @@ public class StaffController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetStaff()
     {
-        var staff = await _context.Staff.ToListAsync();
+        var staff = await _context.Staff
+        .Where(s => s.IsActive)
+        .ToListAsync();
 
         return Ok(staff);
     }
