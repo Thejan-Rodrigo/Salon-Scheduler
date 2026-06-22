@@ -1,10 +1,11 @@
-function App() {
+import { Button } from "@/components/ui/button";
 
+function App() {
   return (
-    <>
-      test
-    </>
-  )
+    <div className="flex min-h-screen items-center justify-center">
+      <Button>Login</Button>
+    </div>
+  );
 }
 
-export default App
+export default App;
