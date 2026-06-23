@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import {
   Card,
   CardContent,
@@ -16,6 +17,7 @@ import {
 } from "lucide-react";
 
 export default function LandingPage() {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
@@ -52,7 +54,7 @@ export default function LandingPage() {
           </nav>
 
           <div className="flex gap-3">
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => navigate("/login")}>
               Login
             </Button>
 

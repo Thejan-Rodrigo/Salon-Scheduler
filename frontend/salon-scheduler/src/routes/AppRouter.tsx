@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import LandingPage from "@/view/landingPage";
 
+import LoginPage from "@/view/login/LoginPage";
+
 import { ROUTES } from "./routePaths";
 
 export default function AppRouter() {
@@ -11,6 +13,12 @@ export default function AppRouter() {
         <Route
           path={ROUTES.HOME}
           element={<LandingPage />}
+        />
+      </Routes>
+      <Routes>
+        <Route
+          path={ROUTES.LOGIN}
+          element={<LoginPage />}
         />
       </Routes>
     </BrowserRouter>
