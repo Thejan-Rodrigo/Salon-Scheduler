@@ -2,6 +2,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useLoginMutation } from "@/features/auth/authApi";
+import { setAuth } from "@/features/auth/authSlice";
+import { useAppDispatch } from "@/hooks/reduxHooks";
+import {
+  Alert,
+  AlertDescription,
+} from "@/components/ui/alert";
 
 import {
   LogIn,
@@ -9,8 +16,32 @@ import {
   Lock,
   Eye,
 } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const [login] = useLoginMutation();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loginError, setLoginError] = useState(false);
+
+    const handleLogin = async () => {
+      try {
+        const response = await login({
+          email,
+          password,
+        }).unwrap();
+
+        dispatch(setAuth(response));
+
+        navigate("/dashboard");
+      } catch (err: any) {
+        setLoginError(true);
+        console.log(err);
+      }
+    };
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-b from-sky-200 via-sky-100 to-white px-4">
       {/* Decorative Circles */}
@@ -52,6 +83,13 @@ export default function LoginPage() {
 
           {/* Email */}
           <div className="mb-4 space-y-2">
+            {loginError && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertDescription>
+                  Invalid email or password
+                </AlertDescription>
+              </Alert>
+            )}
             <Label htmlFor="email">
               Email
             </Label>
@@ -64,6 +102,10 @@ export default function LoginPage() {
                 type="email"
                 placeholder="Enter your email"
                 className="pl-10"
+                value={email}
+                onChange={(e) =>
+                    setEmail(e.target.value)
+                }
               />
             </div>
           </div>
@@ -82,6 +124,10 @@ export default function LoginPage() {
                 type="password"
                 placeholder="Enter your password"
                 className="pl-10 pr-10"
+                value={password}
+                onChange={(e) =>
+                    setPassword(e.target.value)
+                }
               />
 
               <Eye className="absolute right-3 top-3 h-4 w-4 cursor-pointer text-muted-foreground" />
@@ -99,6 +145,7 @@ export default function LoginPage() {
           <Button
             className="w-full"
             size="lg"
+            onClick={handleLogin}
           >
             Sign In
           </Button>

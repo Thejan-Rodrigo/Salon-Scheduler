@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "@/hooks/reduxHooks";
 import {
   Card,
   CardContent,
@@ -15,9 +16,17 @@ import {
   Scissors,
   Users,
 } from "lucide-react";
+import { ROUTES } from "@/routes/routePaths";
 
 export default function LandingPage() {
   const navigate = useNavigate();
+
+  const user = useAppSelector(
+    (state) => state.auth.user
+  );
+
+  const isAuthenticated = !!user;
+  
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
@@ -54,13 +63,34 @@ export default function LandingPage() {
           </nav>
 
           <div className="flex gap-3">
-            <Button variant="outline" onClick={() => navigate("/login")}>
-              Login
-            </Button>
+            {isAuthenticated ? (
+              <Button
+                onClick={() =>
+                  navigate(ROUTES.DASHBOARD)
+                }
+              >
+                Go To Dashboard
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    navigate(ROUTES.LOGIN)
+                  }
+                >
+                  Login
+                </Button>
 
-            <Button>
-              Get Started
-            </Button>
+                <Button
+                  onClick={() =>
+                    navigate(ROUTES.LOGIN)
+                  }
+                >
+                  Get Started
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -85,8 +115,19 @@ export default function LandingPage() {
           </p>
 
           <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <Button size="lg">
-              Get Started
+            <Button
+              size="lg"
+              onClick={() =>
+                navigate(
+                  isAuthenticated
+                    ? ROUTES.DASHBOARD
+                    : ROUTES.LOGIN
+                )
+              }
+            >
+              {isAuthenticated
+                ? "Go To Dashboard"
+                : "Get Started"}
             </Button>
 
             <Button
