@@ -1,6 +1,7 @@
 // src/services/APIService.ts
 
 import axios from "axios";
+import { store } from "@/app/store";
 
 const APIService = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -11,15 +12,16 @@ const APIService = axios.create({
 
 APIService.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token =
+      store.getState().auth.user?.token;
 
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization =
+        `Bearer ${token}`;
     }
 
     return config;
-  },
-  (error) => Promise.reject(error)
+  }
 );
 
 APIService.interceptors.response.use(
