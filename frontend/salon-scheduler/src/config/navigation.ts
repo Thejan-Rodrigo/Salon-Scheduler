@@ -1,0 +1,53 @@
+import {
+  LayoutDashboard,
+  Users,
+  Scissors,
+  CalendarDays,
+  UserRound,
+  Settings,
+} from "lucide-react";
+import { ROUTES } from "@/routes/routePaths";
+
+export const NAVIGATION_ITEMS = [
+  {
+    label: "Dashboard",
+    path: ROUTES.DASHBOARD,
+    icon: LayoutDashboard,
+    allowedRoles: ["Admin", "Staff"],
+  },
+
+  {
+    label: "Staff",
+    path: ROUTES.STAFF,
+    icon: Users,
+    allowedRoles: ["Admin"],
+  },
+
+  {
+    label: "Services",
+    path: ROUTES.SERVICES,
+    icon: Scissors,
+    allowedRoles: ["Admin"],
+  },
+
+  {
+    label: "Appointments",
+    path: ROUTES.APPOINTMENTS,
+    icon: CalendarDays,
+    allowedRoles: ["Admin", "Staff"],
+  },
+
+  {
+    label: "Customers",
+    path: ROUTES.CUSTOMERS,
+    icon: UserRound,
+    allowedRoles: ["Admin", "Staff"],
+  },
+
+  {
+    label: "Settings",
+    path: ROUTES.SETTINGS,
+    icon: Settings,
+    allowedRoles: ["Admin"],
+  },
+];
