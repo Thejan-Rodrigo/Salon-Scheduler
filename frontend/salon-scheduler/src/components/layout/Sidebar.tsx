@@ -6,6 +6,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
@@ -31,22 +32,25 @@ export default function AppSidebar() {
         </h2>
       </SidebarHeader>
 
-      <SidebarContent>
+     <SidebarContent>
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.path}>
-              <NavLink
-                to={item.path}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-md px-3 py-2 transition-colors ${
-                    isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "hover:bg-muted"
-                  }`
-                }
-              >
-                {item.icon && <item.icon size={18} />}
-                <span>{item.label}</span>
+              <NavLink to={item.path}>
+                {({ isActive }) => (
+                  <SidebarMenuButton asChild isActive={isActive}>
+                    <span
+                      className={`flex items-center gap-3 rounded-md px-2 py-1 ${
+                        isActive
+                          ? "bg-black text-white"
+                          : "hover:bg-muted"
+                      }`}
+                    >
+                      {item.icon && <item.icon size={18} />}
+                      <span>{item.label}</span>
+                    </span>
+                  </SidebarMenuButton>
+                )}
               </NavLink>
             </SidebarMenuItem>
           ))}

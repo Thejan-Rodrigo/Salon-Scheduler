@@ -1,0 +1,9 @@
+export interface Staff {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  role: string;
+  isActive: boolean;
+}
