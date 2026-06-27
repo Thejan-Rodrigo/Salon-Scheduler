@@ -4,6 +4,7 @@ import LandingPage from "@/view/landingPage";
 import LoginPage from "@/view/login/LoginPage";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import StaffPage from "@/view/staff/StaffPage";
+import AddStaffPage from "@/view/staff/AddStaffPage";
 
 import { ROUTES } from "./routePaths";
 
@@ -31,6 +32,7 @@ export default function AppRouter() {
             path={ROUTES.STAFF.replace("/dashboard/", "")}
             element={<StaffPage />}
           />
+          <Route path="staff/add" element={<AddStaffPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

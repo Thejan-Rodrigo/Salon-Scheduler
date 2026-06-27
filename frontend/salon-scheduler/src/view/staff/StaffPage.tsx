@@ -1,10 +1,13 @@
-import { Card, CardContent } from "@/components/ui/card";
-
 import StaffTable from "@/components/staff/StaffTable";
-
 import { useGetStaffQuery } from "@/features/staff/staffApi";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { ROUTES } from "@/routes/routePaths";
 
 export default function StaffPage() {
+  const navigate = useNavigate();
+
   const {
     data: staff = [],
     isLoading,
@@ -16,30 +19,29 @@ export default function StaffPage() {
   }
 
   if (error) {
-    return (
-      <div>
-        Failed to load staff members.
-      </div>
-    );
+    return <div>Failed to load staff members.</div>;
   }
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">
-          Staff Management
-        </h1>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">
+            Staff Management
+          </h1>
 
-        <p className="text-muted-foreground">
-          Manage salon staff members.
-        </p>
+          <p className="text-muted-foreground">
+            Manage salon staff members.
+          </p>
+        </div>
+
+        <Button onClick={() => navigate(ROUTES.ADD_STAFF)}>
+          <Plus className="mr-2 h-4 w-4" />
+          Add Staff
+        </Button>
       </div>
 
-      <Card>
-        <CardContent className="p-6">
-          <StaffTable staff={staff} />
-        </CardContent>
-      </Card>
+      <StaffTable staff={staff} />
     </div>
   );
 }
