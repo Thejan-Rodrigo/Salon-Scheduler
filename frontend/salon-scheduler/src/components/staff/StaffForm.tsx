@@ -4,6 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
+import { useCreateStaffMutation } from "@/features/staff/staffApi";
+
 import {
   Select,
   SelectContent,
@@ -15,7 +18,37 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 
 export default function StaffForm() {
+
+  const [createStaff, { isLoading }] = useCreateStaffMutation();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [role, setRole] = useState("");
+  const [password, setPassword] = useState("");
   const [isActive, setIsActive] = useState(true);
+
+  const handleSubmit = async (
+    e: React.FormEvent
+  ) => {
+    e.preventDefault();
+
+    try {
+      await createStaff({
+        firstName,
+        lastName,
+        email,
+        phone,
+        role,
+        password,
+        isActive,
+      }).unwrap();
+
+      alert("Staff member created.");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <Card className="max-w-4xl mx-auto">
@@ -25,7 +58,7 @@ export default function StaffForm() {
 
       <Separator />
 
-      <CardContent className="pt-6">
+      <CardContent className="pt-6" onSubmit={handleSubmit}>
         <form className="space-y-6">
 
           {/* Personal Information */}
@@ -44,6 +77,8 @@ export default function StaffForm() {
                 <Input
                   id="firstName"
                   placeholder="John"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                 />
               </div>
 
@@ -55,6 +90,8 @@ export default function StaffForm() {
                 <Input
                   id="lastName"
                   placeholder="Doe"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
 
@@ -67,6 +104,8 @@ export default function StaffForm() {
                   id="email"
                   type="email"
                   placeholder="john@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 
@@ -78,6 +117,8 @@ export default function StaffForm() {
                 <Input
                   id="phone"
                   placeholder="+94 77 123 4567"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
 
@@ -100,23 +141,18 @@ export default function StaffForm() {
                   Role
                 </Label>
 
-                <Select>
+                <Select
+                  value={role}
+                  onValueChange={setRole}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>
 
                   <SelectContent>
-                    <SelectItem value="Admin">
-                      Admin
-                    </SelectItem>
-
-                    <SelectItem value="Receptionist">
-                      Receptionist
-                    </SelectItem>
-
-                    <SelectItem value="Barber">
-                      Barber
-                    </SelectItem>
+                    <SelectItem value="Admin">Admin</SelectItem>
+                    <SelectItem value="Receptionist">Receptionist</SelectItem>
+                    <SelectItem value="Barber">Barber</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -148,6 +184,8 @@ export default function StaffForm() {
                 <Input
                   id="password"
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
 
@@ -178,8 +216,13 @@ export default function StaffForm() {
               Cancel
             </Button>
 
-            <Button type="submit">
-              Save Staff Member
+            <Button
+                type="submit"
+                disabled={isLoading}
+            >
+                {isLoading
+                    ? "Saving..."
+                    : "Save Staff Member"}
             </Button>
 
           </div>

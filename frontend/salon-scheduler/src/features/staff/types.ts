@@ -7,3 +7,13 @@ export interface Staff {
   role: string;
   isActive: boolean;
 }
+
+export interface CreateStaffRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  role: string;
+  password: string;
+  isActive: boolean;
+}

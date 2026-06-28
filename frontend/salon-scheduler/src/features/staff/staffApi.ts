@@ -1,20 +1,29 @@
 import { api } from "@/services/api";
 
-import type { Staff } from "./types";
+import type { Staff, CreateStaffRequest } from "./types";
 
 export const staffApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getStaff: builder.query<Staff[], void>({
       query: () => ({
         url: "/staff",
-        method: "GET",
+      }),
+      providesTags: ["Staff"],
+    }),
+
+    createStaff: builder.mutation<void, CreateStaffRequest>({
+      query: (body) => ({
+        url: "/staff",
+        method: "POST",
+        data: body,
       }),
 
-      providesTags: ["Staff"],
+      invalidatesTags: ["Staff"],
     }),
   }),
 });
 
 export const {
   useGetStaffQuery,
+  useCreateStaffMutation,
 } = staffApi;
