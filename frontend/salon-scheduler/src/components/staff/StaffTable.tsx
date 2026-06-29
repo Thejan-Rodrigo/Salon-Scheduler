@@ -1,5 +1,7 @@
 import type { Staff } from "@/features/staff/types";
 
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+
 import {
   Table,
   TableBody,
@@ -9,13 +11,32 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { Button } from "@/components/ui/button";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 interface Props {
   staff: Staff[];
 }
 
-export default function StaffTable({
-  staff,
-}: Props) {
+export default function StaffTable({ staff }: Props) {
+  const handleEdit = (staffId: string) => {
+    console.log("Edit", staffId);
+
+    // navigate(`/staff/edit/${staffId}`)
+  };
+
+  const handleDelete = (staffId: string) => {
+    console.log("Delete", staffId);
+
+    // Show confirmation dialog here
+  };
+
   return (
     <Table>
       <TableHeader>
@@ -26,37 +47,61 @@ export default function StaffTable({
           <TableHead>Phone</TableHead>
           <TableHead>Role</TableHead>
           <TableHead>Status</TableHead>
+          <TableHead className="w-[80px] text-right">
+            Action
+          </TableHead>
         </TableRow>
       </TableHeader>
 
       <TableBody>
         {staff.map((member) => (
           <TableRow key={member.id}>
-            <TableCell>
-              {member.firstName}
-            </TableCell>
+            <TableCell>{member.firstName}</TableCell>
+
+            <TableCell>{member.lastName}</TableCell>
+
+            <TableCell>{member.email}</TableCell>
+
+            <TableCell>{member.phone}</TableCell>
+
+            <TableCell>{member.role}</TableCell>
 
             <TableCell>
-              {member.lastName}
+              {member.isActive ? "Active" : "Inactive"}
             </TableCell>
 
-            <TableCell>
-              {member.email}
+            <TableCell className="text-right">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                  >
+                    <MoreHorizontal className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent align="end">
+
+                  <DropdownMenuItem
+                    onClick={() => handleEdit(member.id)}
+                  >
+                    <Pencil className="mr-2 h-4 w-4" />
+                    Edit
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem
+                    onClick={() => handleDelete(member.id)}
+                    className="text-red-600 focus:text-red-600"
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete
+                  </DropdownMenuItem>
+
+                </DropdownMenuContent>
+              </DropdownMenu>
             </TableCell>
 
-            <TableCell>
-              {member.phone}
-            </TableCell>
-
-            <TableCell>
-              {member.role}
-            </TableCell>
-
-            <TableCell>
-              {member.isActive
-                ? "Active"
-                : "Inactive"}
-            </TableCell>
           </TableRow>
         ))}
       </TableBody>
