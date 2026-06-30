@@ -22,14 +22,10 @@ import {
 
 interface Props {
   staff: Staff[];
+  onEdit: (staff: Staff) => void;
 }
 
-export default function StaffTable({ staff }: Props) {
-  const handleEdit = (staffId: string) => {
-    console.log("Edit", staffId);
-
-    // navigate(`/staff/edit/${staffId}`)
-  };
+export default function StaffTable({staff, onEdit,}: Props) {
 
   const handleDelete = (staffId: string) => {
     console.log("Delete", staffId);
@@ -84,7 +80,7 @@ export default function StaffTable({ staff }: Props) {
                 <DropdownMenuContent align="end">
 
                   <DropdownMenuItem
-                    onClick={() => handleEdit(member.id)}
+                    onClick={() => onEdit(member)}
                   >
                     <Pencil className="mr-2 h-4 w-4" />
                     Edit

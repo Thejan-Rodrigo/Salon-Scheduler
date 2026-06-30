@@ -17,3 +17,11 @@ export interface CreateStaffRequest {
   password: string;
   isActive: boolean;
 }
+
+export interface UpdateStaffRequest {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+}

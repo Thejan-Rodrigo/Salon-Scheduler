@@ -4,9 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { ROUTES } from "@/routes/routePaths";
+import { useState } from "react";
+import EditStaffDialog from "@/components/staff/EditStaffDialog";
+import type { Staff } from "@/features/staff/types";
 
 export default function StaffPage() {
   const navigate = useNavigate();
+  const [selectedStaff, setSelectedStaff] = useState<Staff | null>(null);
+
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   const {
     data: staff = [],
@@ -41,7 +47,19 @@ export default function StaffPage() {
         </Button>
       </div>
 
-      <StaffTable staff={staff} />
+      <StaffTable
+        staff={staff}
+        onEdit={(staff) => {
+          setSelectedStaff(staff);
+          setEditDialogOpen(true);
+        }}
+      />
+
+      <EditStaffDialog
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        staff={selectedStaff}
+      />
     </div>
   );
 }
