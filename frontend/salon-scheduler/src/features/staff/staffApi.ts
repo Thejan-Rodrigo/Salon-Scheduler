@@ -30,6 +30,15 @@ export const staffApi = api.injectEndpoints({
 
       invalidatesTags: ["Staff"],
     }),
+
+    deleteStaff: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `/staff/${id}`,
+        method: "DELETE",
+      }),
+
+      invalidatesTags: ["Staff"],
+    }),
   }),
 
   overrideExisting: false,
@@ -39,4 +48,5 @@ export const {
   useGetStaffQuery,
   useCreateStaffMutation,
   useUpdateStaffMutation,
+  useDeleteStaffMutation,
 } = staffApi;

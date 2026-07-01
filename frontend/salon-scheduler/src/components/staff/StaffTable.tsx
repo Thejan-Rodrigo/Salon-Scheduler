@@ -1,5 +1,7 @@
 import type { Staff } from "@/features/staff/types";
 
+import { useDeleteStaffMutation } from "@/features/staff/staffApi";
+
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
 import {
@@ -27,10 +29,17 @@ interface Props {
 
 export default function StaffTable({staff, onEdit,}: Props) {
 
-  const handleDelete = (staffId: string) => {
-    console.log("Delete", staffId);
+  const [deleteStaff, { isLoading }] = useDeleteStaffMutation();
 
-    // Show confirmation dialog here
+
+  const handleDelete = async (staffId: string) => {
+    if (!staffId) return;
+
+    try {
+      await deleteStaff(staffId).unwrap();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -91,7 +100,9 @@ export default function StaffTable({staff, onEdit,}: Props) {
                     className="text-red-600 focus:text-red-600"
                   >
                     <Trash2 className="mr-2 h-4 w-4" />
-                    Delete
+                    {isLoading
+                      ? "Deleting..."
+                      : "Delete"}
                   </DropdownMenuItem>
 
                 </DropdownMenuContent>
