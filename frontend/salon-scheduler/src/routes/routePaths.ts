@@ -4,10 +4,6 @@ export const ROUTES = {
 
   DASHBOARD: "/dashboard",
 
-  STAFF: "/staff",
-  SERVICES: "/services",
-  APPOINTMENTS: "/appointments",
-  CUSTOMERS: "/customers",
-
-  SETTINGS: "/settings",
+  STAFF: "/dashboard/staff",
+  ADD_STAFF: "/dashboard/staff/add",
 } as const;

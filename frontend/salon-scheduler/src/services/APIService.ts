@@ -1,7 +1,6 @@
 // src/services/APIService.ts
 
 import axios from "axios";
-import { store } from "@/app/store";
 
 const APIService = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -9,31 +8,5 @@ const APIService = axios.create({
     "Content-Type": "application/json",
   },
 });
-
-APIService.interceptors.request.use(
-  (config) => {
-    const token =
-      store.getState().auth.user?.token;
-
-    if (token) {
-      config.headers.Authorization =
-        `Bearer ${token}`;
-    }
-
-    return config;
-  }
-);
-
-APIService.interceptors.response.use(
-  (response) => response,
-
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-    }
-
-    return Promise.reject(error);
-  }
-);
 
 export default APIService;
