@@ -16,9 +16,12 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/routes/routePaths";
 
 export default function StaffForm() {
 
+  const navigate = useNavigate();
   const [createStaff, { isLoading }] = useCreateStaffMutation();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -44,7 +47,7 @@ export default function StaffForm() {
         isActive,
       }).unwrap();
 
-      alert("Staff member created.");
+      navigate(ROUTES.STAFF);
     } catch (err) {
       console.error(err);
     }
@@ -212,6 +215,7 @@ export default function StaffForm() {
             <Button
               type="button"
               variant="outline"
+              onClick={() => navigate(ROUTES.STAFF)}
             >
               Cancel
             </Button>
