@@ -6,11 +6,27 @@ import { Button } from "@/components/ui/button";
 
 import ServiceTable from "@/components/service/ServiceTable";
 
+import { useGetServicesQuery } from "@/features/service/serviceApi";
 
 import { ROUTES } from "@/routes/routePaths";
 
 export default function ServicePage() {
     const navigate = useNavigate();
+
+    const {
+        data: services = [],
+        isLoading,
+        error,
+    } = useGetServicesQuery();
+
+    if (isLoading) {
+        return <div>Loading services...</div>;
+    }
+
+    if (error) {
+        return <div>Failed to load services.</div>;
+    }
+
     return (
         <div className="space-y-6">
 
@@ -37,11 +53,7 @@ export default function ServicePage() {
 
             </div>
 
-            <ServiceTable services={[{id: "",
-            name: "test",
-            duration: 10,
-            price: 10,
-            isActive: true}]} />
+            <ServiceTable services={services} />
 
         </div>
     );
