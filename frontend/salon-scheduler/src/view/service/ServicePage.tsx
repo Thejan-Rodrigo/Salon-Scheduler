@@ -19,11 +19,7 @@ import EditServiceDialog from "@/components/service/EditServiceDialog";
 export default function ServicePage() {
     const navigate = useNavigate();
     const [selectedService, setSelectedService] = useState<Service | null>(null);
-
     const [editDialogOpen, setEditDialogOpen] = useState(false);
-
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
 
     const {
         data: services = [],
@@ -73,7 +69,6 @@ export default function ServicePage() {
                 }}
                 onDelete={(service) => {
                     setSelectedService(service);
-                    setDeleteDialogOpen(true);
                 }}
             />
 

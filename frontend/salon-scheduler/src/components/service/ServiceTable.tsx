@@ -24,6 +24,8 @@ import {
     Trash2,
 } from "lucide-react";
 
+import { useDeleteServiceMutation } from "@/features/service/serviceApi";
+
 interface Props {
     services: Service[];
     onEdit: (service: Service) => void;
@@ -33,8 +35,18 @@ interface Props {
 export default function ServiceTable({
     services,
     onEdit,
-    onDelete,
 }: Props) {
+    const [deleteService] = useDeleteServiceMutation();
+
+    const handleDelete = async (id: string) => {
+
+        try {
+            await deleteService(id).unwrap();
+        } catch (err) {
+            console.error(err);
+            alert("Failed to delete service.");
+        }
+    };
     return (
         <Table>
             <TableHeader>
@@ -97,9 +109,7 @@ export default function ServiceTable({
 
                                     <DropdownMenuItem
                                         className="text-red-600"
-                                        onClick={() =>
-                                            onDelete(service)
-                                        }
+                                        onClick={() => handleDelete(service.id)}
                                     >
                                         <Trash2 className="mr-2 h-4 w-4" />
                                         Delete
