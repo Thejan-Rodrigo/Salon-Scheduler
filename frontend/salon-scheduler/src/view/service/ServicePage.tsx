@@ -14,6 +14,8 @@ import { useState } from "react";
 
 import type { Service } from "@/features/service/types";
 
+import EditServiceDialog from "@/components/service/EditServiceDialog";
+
 export default function ServicePage() {
     const navigate = useNavigate();
     const [selectedService, setSelectedService] = useState<Service | null>(null);
@@ -21,6 +23,7 @@ export default function ServicePage() {
     const [editDialogOpen, setEditDialogOpen] = useState(false);
 
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
 
     const {
         data: services = [],
@@ -72,6 +75,12 @@ export default function ServicePage() {
                     setSelectedService(service);
                     setDeleteDialogOpen(true);
                 }}
+            />
+
+            <EditServiceDialog
+                open={editDialogOpen}
+                onOpenChange={setEditDialogOpen}
+                service={selectedService}
             />
 
         </div>
