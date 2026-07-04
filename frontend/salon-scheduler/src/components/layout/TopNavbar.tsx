@@ -2,9 +2,16 @@ import { Button } from "@/components/ui/button";
 
 import { logout } from "@/features/auth/authSlice";
 import { useAppDispatch } from "@/hooks/reduxHooks";
+import { useNavigate } from "react-router-dom";
 
 export default function TopNavbar() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  }
 
   return (
     <header className="flex h-16 items-center justify-between border-b px-6">
@@ -14,7 +21,7 @@ export default function TopNavbar() {
 
       <Button
         variant="outline"
-        onClick={() => dispatch(logout())}
+        onClick={handleLogout}
       >
         Logout
       </Button>

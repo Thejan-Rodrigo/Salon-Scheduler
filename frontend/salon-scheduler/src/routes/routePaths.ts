@@ -6,4 +6,7 @@ export const ROUTES = {
 
   STAFF: "/dashboard/staff",
   ADD_STAFF: "/dashboard/staff/add",
+
+  SERVICE: "/dashboard/service",
+  ADD_SERVICE: "/dashboard/service/add",
 } as const;

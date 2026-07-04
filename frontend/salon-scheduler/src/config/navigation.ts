@@ -25,28 +25,28 @@ export const NAVIGATION_ITEMS = [
 
   {
     label: "Services",
-    path: ROUTES.SERVICES,
+    path: ROUTES.SERVICE,
     icon: Scissors,
     allowedRoles: ["Admin"],
   },
 
   {
     label: "Appointments",
-    path: ROUTES.APPOINTMENTS,
+    path: ROUTES.HOME,
     icon: CalendarDays,
     allowedRoles: ["Admin", "Staff"],
   },
 
   {
     label: "Customers",
-    path: ROUTES.CUSTOMERS,
+    path: ROUTES.HOME,
     icon: UserRound,
     allowedRoles: ["Admin", "Staff"],
   },
 
   {
     label: "Settings",
-    path: ROUTES.SETTINGS,
+    path: ROUTES.HOME,
     icon: Settings,
     allowedRoles: ["Admin"],
   },
