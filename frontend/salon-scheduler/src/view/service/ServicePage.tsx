@@ -10,8 +10,17 @@ import { useGetServicesQuery } from "@/features/service/serviceApi";
 
 import { ROUTES } from "@/routes/routePaths";
 
+import { useState } from "react";
+
+import type { Service } from "@/features/service/types";
+
 export default function ServicePage() {
     const navigate = useNavigate();
+    const [selectedService, setSelectedService] = useState<Service | null>(null);
+
+    const [editDialogOpen, setEditDialogOpen] = useState(false);
+
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     const {
         data: services = [],
@@ -53,7 +62,17 @@ export default function ServicePage() {
 
             </div>
 
-            <ServiceTable services={services} />
+            <ServiceTable
+                services={services}
+                onEdit={(service) => {
+                    setSelectedService(service);
+                    setEditDialogOpen(true);
+                }}
+                onDelete={(service) => {
+                    setSelectedService(service);
+                    setDeleteDialogOpen(true);
+                }}
+            />
 
         </div>
     );

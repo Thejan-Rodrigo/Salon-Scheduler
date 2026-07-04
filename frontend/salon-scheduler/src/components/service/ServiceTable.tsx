@@ -9,21 +9,44 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import { Button } from "@/components/ui/button";
+
+import {
+    MoreHorizontal,
+    Pencil,
+    Trash2,
+} from "lucide-react";
+
 interface Props {
     services: Service[];
+    onEdit: (service: Service) => void;
+    onDelete: (service: Service) => void;
 }
 
 export default function ServiceTable({
     services,
+    onEdit,
+    onDelete,
 }: Props) {
     return (
         <Table>
             <TableHeader>
                 <TableRow>
                     <TableHead>Name</TableHead>
+                    <TableHead>Description</TableHead>
                     <TableHead>Duration</TableHead>
                     <TableHead>Price</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead className="w-[70px] text-center">
+                        Action
+                    </TableHead>
                 </TableRow>
             </TableHeader>
 
@@ -31,6 +54,10 @@ export default function ServiceTable({
                 {services.map((service) => (
                     <TableRow key={service.id}>
                         <TableCell>{service.name}</TableCell>
+
+                        <TableCell className="max-w-xs truncate">
+                            {service.description}
+                        </TableCell>
 
                         <TableCell>
                             {service.duration} mins
@@ -45,6 +72,43 @@ export default function ServiceTable({
                                 ? "Active"
                                 : "Inactive"}
                         </TableCell>
+
+                        <TableCell className="text-center">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                    >
+                                        <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+
+                                <DropdownMenuContent align="end">
+
+                                    <DropdownMenuItem
+                                        onClick={() =>
+                                            onEdit(service)
+                                        }
+                                    >
+                                        <Pencil className="mr-2 h-4 w-4" />
+                                        Edit
+                                    </DropdownMenuItem>
+
+                                    <DropdownMenuItem
+                                        className="text-red-600"
+                                        onClick={() =>
+                                            onDelete(service)
+                                        }
+                                    >
+                                        <Trash2 className="mr-2 h-4 w-4" />
+                                        Delete
+                                    </DropdownMenuItem>
+
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </TableCell>
+
                     </TableRow>
                 ))}
             </TableBody>
