@@ -52,7 +52,7 @@ export default function AppointmentTable({
             <TableCell>{appointment.paymentStatus}</TableCell>
 
             <TableCell>
-              Rs. {appointment.price.toLocaleString()}
+              Rs. {appointment.price}
             </TableCell>
           </TableRow>
         ))}
