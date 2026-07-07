@@ -5,12 +5,18 @@ import { useGetAppointmentsQuery } from "@/features/appointment/appointmentApi";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
+import { useNavigate } from "react-router-dom";
+
+import { ROUTES } from "@/routes/routePaths";
+
 export default function AppointmentPage() {
     const {
         data: appointments = [],
         isLoading,
         error,
     } = useGetAppointmentsQuery();
+
+    const navigate = useNavigate();
 
     if (isLoading) {
         return <div>Loading appointments...</div>;
@@ -40,7 +46,9 @@ export default function AppointmentPage() {
 
                 </div>
 
-                <Button>
+                <Button
+                    onClick={() => navigate(ROUTES.ADD_APPOINTMENT)}
+                >
                     <Plus className="mr-2 h-4 w-4" />
                     Add Appointment
                 </Button>

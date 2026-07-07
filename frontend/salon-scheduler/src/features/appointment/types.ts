@@ -1,27 +1,43 @@
 export interface Appointment {
-  id: string;
+    id: string;
 
-  customerName: string;
+    customerName: string;
 
-  staffName: string;
+    staffName: string;
 
-  serviceName: string;
+    serviceName: string;
 
-  appointmentDate: string;
+    appointmentDate: string;
 
-  startTime: string;
+    startTime: string;
 
-  endTime: string;
+    endTime: string;
 
-  status:
+    status:
     | "Pending"
     | "Confirmed"
     | "Completed"
     | "Cancelled";
 
-  paymentStatus:
+    paymentStatus:
     | "Pending"
     | "Paid";
 
-  price: number;
+    price: number;
+}
+
+export interface CreateAppointmentRequest {
+    customerId: string;
+
+    staffId: string;
+
+    serviceId: string;
+
+    appointmentDate: string;
+
+    startTime: string;
+
+    endTime: string;
+
+    notes?: string;
 }
