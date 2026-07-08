@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 import { ROUTES } from "@/routes/routePaths";
 
+import type { Appointment } from "@/features/appointment/types"
+
 export default function AppointmentPage() {
     const {
         data: appointments = [],
@@ -29,6 +31,16 @@ export default function AppointmentPage() {
             </div>
         );
     }
+
+    const handleEdit = (appointment: Appointment) => {
+        console.log("Edit", appointment);
+        // Open edit dialog later
+    };
+
+    const handleDelete = (appointment: Appointment) => {
+        console.log("Delete", appointment);
+        // Show confirmation dialog later
+    };
 
     return (
         <div className="space-y-6">
@@ -57,6 +69,8 @@ export default function AppointmentPage() {
 
             <AppointmentTable
                 appointments={appointments}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
             />
 
         </div>
