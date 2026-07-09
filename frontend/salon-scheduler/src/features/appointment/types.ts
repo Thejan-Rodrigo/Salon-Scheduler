@@ -1,6 +1,12 @@
 export interface Appointment {
     id: string;
 
+    customerId: string;
+
+    staffId: string;
+
+    serviceId: string;
+
     customerName: string;
 
     staffName: string;
@@ -40,4 +46,15 @@ export interface CreateAppointmentRequest {
     endTime: string;
 
     notes?: string;
+}
+
+export interface UpdateAppointmentRequest {
+  customerId: string;
+  staffId: string;
+  serviceId: string;
+  appointmentDate: string;
+  startTime: string;
+  endTime: string;
+  status: string;
+  paymentStatus: string;
 }
