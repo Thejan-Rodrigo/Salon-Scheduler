@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/routes/routePaths";
 
 import type { Appointment } from "@/features/appointment/types"
+import { useState } from "react";
 
 export default function AppointmentPage() {
     const {
@@ -19,6 +20,18 @@ export default function AppointmentPage() {
     } = useGetAppointmentsQuery();
 
     const navigate = useNavigate();
+    const [selectedAppointment, setSelectedAppointment] =
+        useState<Appointment | null>(null);
+
+    const [editOpen, setEditOpen] =
+        useState(false);
+
+    const handleEdit = (
+        appointment: Appointment
+    ) => {
+        setSelectedAppointment(appointment);
+        setEditOpen(true);
+    };
 
     if (isLoading) {
         return <div>Loading appointments...</div>;
@@ -31,11 +44,6 @@ export default function AppointmentPage() {
             </div>
         );
     }
-
-    const handleEdit = (appointment: Appointment) => {
-        console.log("Edit", appointment);
-        // Open edit dialog later
-    };
 
     const handleDelete = (appointment: Appointment) => {
         console.log("Delete", appointment);

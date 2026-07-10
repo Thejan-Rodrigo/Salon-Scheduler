@@ -1,26 +1,44 @@
 import { api } from "@/services/api";
 
-import type { Appointment } from "./types";
-
-import type { CreateAppointmentRequest } from "@/features/appointment/types";
+import type {
+    Appointment,
+    CreateAppointmentRequest,
+    UpdateAppointmentRequest,
+} from "./types";
 
 export const appointmentApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getAppointments: builder.query<Appointment[], void>({
             query: () => ({
-                url: "appointment/all",
-                method: "GET",
+                url: "/appointments",
             }),
 
             providesTags: ["Appointment"],
         }),
+
         createAppointment: builder.mutation<
-            void,
+            Appointment,
             CreateAppointmentRequest
         >({
             query: (body) => ({
-                url: "/appointment",
+                url: "/appointments",
                 method: "POST",
+                data: body,
+            }),
+
+            invalidatesTags: ["Appointment"],
+        }),
+
+        updateAppointment: builder.mutation<
+            Appointment,
+            {
+                id: string;
+                body: UpdateAppointmentRequest;
+            }
+        >({
+            query: ({ id, body }) => ({
+                url: `/appointments/${id}`,
+                method: "PUT",
                 data: body,
             }),
 
@@ -32,4 +50,5 @@ export const appointmentApi = api.injectEndpoints({
 export const {
     useGetAppointmentsQuery,
     useCreateAppointmentMutation,
+    useUpdateAppointmentMutation,
 } = appointmentApi;
