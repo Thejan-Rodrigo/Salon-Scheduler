@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 import { ROUTES } from "@/routes/routePaths";
 
+import { useDeleteAppointmentMutation } from "@/features/appointment/appointmentApi";
+
 import type { Appointment } from "@/features/appointment/types"
 import { useState } from "react";
 
@@ -23,14 +25,13 @@ export default function AppointmentPage() {
     const [selectedAppointment, setSelectedAppointment] =
         useState<Appointment | null>(null);
 
-    const [editOpen, setEditOpen] =
-        useState(false);
+    const [deleteAppointment] = useDeleteAppointmentMutation();
+
 
     const handleEdit = (
         appointment: Appointment
     ) => {
         setSelectedAppointment(appointment);
-        setEditOpen(true);
     };
 
     if (isLoading) {
@@ -45,9 +46,13 @@ export default function AppointmentPage() {
         );
     }
 
-    const handleDelete = (appointment: Appointment) => {
-        console.log("Delete", appointment);
-        // Show confirmation dialog later
+    const handleDelete = async (appointment: Appointment) => {
+        try {
+            await deleteAppointment(appointment.id).unwrap();
+        } catch (err) {
+            console.error(err);
+            alert("Failed to delete service.");
+        }
     };
 
     return (
