@@ -22,8 +22,6 @@ export default function AppointmentPage() {
     } = useGetAppointmentsQuery();
 
     const navigate = useNavigate();
-    const [selectedAppointment, setSelectedAppointment] =
-        useState<Appointment | null>(null);
 
     const [deleteAppointment] = useDeleteAppointmentMutation();
 
@@ -31,7 +29,6 @@ export default function AppointmentPage() {
     const handleEdit = (
         appointment: Appointment
     ) => {
-        setSelectedAppointment(appointment);
     };
 
     if (isLoading) {
