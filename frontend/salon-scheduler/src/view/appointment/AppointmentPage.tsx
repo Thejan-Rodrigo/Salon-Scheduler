@@ -12,7 +12,6 @@ import { ROUTES } from "@/routes/routePaths";
 import { useDeleteAppointmentMutation } from "@/features/appointment/appointmentApi";
 
 import type { Appointment } from "@/features/appointment/types"
-import { useState } from "react";
 
 export default function AppointmentPage() {
     const {
