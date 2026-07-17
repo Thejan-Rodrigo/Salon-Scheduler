@@ -11,7 +11,9 @@ import { ROUTES } from "@/routes/routePaths";
 
 import { useDeleteAppointmentMutation } from "@/features/appointment/appointmentApi";
 
-import type { Appointment } from "@/features/appointment/types"
+import type { Appointment } from "@/features/appointment/types";
+
+import { useState } from "react";
 
 export default function AppointmentPage() {
     const {
@@ -25,11 +27,17 @@ export default function AppointmentPage() {
     const [deleteAppointment] = useDeleteAppointmentMutation();
 
 
+    const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
+
+    const [editOpen, setEditOpen] = useState(false);
+
     const handleEdit = (
         appointment: Appointment
     ) => {
+        setSelectedAppointment(appointment);
+        setEditOpen(true);
     };
-
+    
     if (isLoading) {
         return <div>Loading appointments...</div>;
     }
