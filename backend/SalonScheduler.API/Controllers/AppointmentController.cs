@@ -180,6 +180,7 @@ public class AppointmentController : ControllerBase
             AppointmentDate = request.AppointmentDate,
             StartTime = request.StartTime,
             EndTime = request.EndTime,
+            Notes = request.Notes,
             Status = "Pending"
         };
 

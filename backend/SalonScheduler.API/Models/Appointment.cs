@@ -20,5 +20,7 @@ public class Appointment
 
     public DateTime EndTime { get; set; }
 
+    public Guid Notes { get; set; }
+
     public string Status { get; set; } = "Pending";
 }
