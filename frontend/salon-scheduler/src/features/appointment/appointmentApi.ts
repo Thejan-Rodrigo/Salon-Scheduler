@@ -10,7 +10,7 @@ export const appointmentApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getAppointments: builder.query<Appointment[], void>({
             query: () => ({
-                url: "/appointments",
+                url: "/appointment/all",
             }),
 
             providesTags: ["Appointment"],
