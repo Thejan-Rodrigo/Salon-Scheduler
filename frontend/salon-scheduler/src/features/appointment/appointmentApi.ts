@@ -37,7 +37,7 @@ export const appointmentApi = api.injectEndpoints({
             }
         >({
             query: ({ id, body }) => ({
-                url: `/appointments/${id}`,
+                url: `/appointment/${id}`,
                 method: "PUT",
                 data: body,
             }),
@@ -47,7 +47,7 @@ export const appointmentApi = api.injectEndpoints({
 
         deleteAppointment: builder.mutation<void, string>({
             query: (id) => ({
-                url: `/appointments/${id}`,
+                url: `/appointment/${id}`,
                 method: "DELETE",
             }),
 
