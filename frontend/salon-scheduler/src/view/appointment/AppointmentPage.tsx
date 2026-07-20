@@ -15,6 +15,8 @@ import type { Appointment } from "@/features/appointment/types";
 
 import { useState } from "react";
 
+import EditAppointmentDialog from "@/components/appointment/EditAppointmentDialog";
+
 export default function AppointmentPage() {
     const {
         data: appointments = [],
@@ -37,7 +39,7 @@ export default function AppointmentPage() {
         setSelectedAppointment(appointment);
         setEditOpen(true);
     };
-    
+
     if (isLoading) {
         return <div>Loading appointments...</div>;
     }
@@ -88,6 +90,12 @@ export default function AppointmentPage() {
                 appointments={appointments}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+            />
+
+            <EditAppointmentDialog
+                open={editOpen}
+                onOpenChange={setEditOpen}
+                appointment={selectedAppointment}
             />
 
         </div>

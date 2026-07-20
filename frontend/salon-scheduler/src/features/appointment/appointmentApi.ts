@@ -21,7 +21,7 @@ export const appointmentApi = api.injectEndpoints({
             CreateAppointmentRequest
         >({
             query: (body) => ({
-                url: "/appointments",
+                url: "/appointment",
                 method: "POST",
                 data: body,
             }),
