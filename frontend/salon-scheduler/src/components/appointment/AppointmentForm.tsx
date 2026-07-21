@@ -107,6 +107,7 @@ export default function AppointmentForm() {
                                 Customer
                             </Label>
 
+                            {/* TODO: List down all the active Customers */}
                             <Select
                                 value={customerId}
                                 onValueChange={setCustomerId}
@@ -133,6 +134,7 @@ export default function AppointmentForm() {
                                 Staff
                             </Label>
 
+                            {/* TODO: List down the all the available staff */}
                             <Select
                                 value={staffId}
                                 onValueChange={setStaffId}
@@ -158,6 +160,7 @@ export default function AppointmentForm() {
                                 Service
                             </Label>
 
+                            {/* TODO: List dow all the active services */}
                             <Select
                                 value={serviceId}
                                 onValueChange={setServiceId}
