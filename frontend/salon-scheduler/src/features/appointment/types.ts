@@ -56,5 +56,4 @@ export interface UpdateAppointmentRequest {
   startTime: string;
   endTime: string;
   status: string;
-  paymentStatus: string;
 }

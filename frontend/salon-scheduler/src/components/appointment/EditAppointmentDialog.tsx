@@ -49,8 +49,6 @@ export default function EditAppointmentDialog({
   const [endTime, setEndTime] = useState("");
 
   const [status, setStatus] = useState("");
-  const [paymentStatus, setPaymentStatus] =
-    useState("");
 
   useEffect(() => {
     if (!appointment) return;
@@ -65,7 +63,6 @@ export default function EditAppointmentDialog({
     setEndTime(appointment.endTime);
 
     setStatus(appointment.status);
-    setPaymentStatus(appointment.paymentStatus);
   }, [appointment]);
 
   const handleSave = async () => {
@@ -82,7 +79,7 @@ export default function EditAppointmentDialog({
           startTime,
           endTime,
           status,
-          paymentStatus,
+          
         },
       }).unwrap();
 
@@ -200,33 +197,6 @@ export default function EditAppointmentDialog({
 
                 <SelectItem value="Cancelled">
                   Cancelled
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label>Payment Status</Label>
-
-            <Select
-              value={paymentStatus}
-              onValueChange={setPaymentStatus}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-
-              <SelectContent>
-                <SelectItem value="Pending">
-                  Pending
-                </SelectItem>
-
-                <SelectItem value="Paid">
-                  Paid
-                </SelectItem>
-
-                <SelectItem value="Refunded">
-                  Refunded
                 </SelectItem>
               </SelectContent>
             </Select>
