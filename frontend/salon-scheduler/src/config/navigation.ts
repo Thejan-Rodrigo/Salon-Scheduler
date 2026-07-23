@@ -32,7 +32,7 @@ export const NAVIGATION_ITEMS = [
 
   {
     label: "Appointments",
-    path: ROUTES.HOME,
+    path: ROUTES.APPOINTMENTS,
     icon: CalendarDays,
     allowedRoles: ["Admin", "Staff"],
   },

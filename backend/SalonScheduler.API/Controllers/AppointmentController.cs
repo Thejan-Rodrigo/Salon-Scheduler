@@ -180,6 +180,7 @@ public class AppointmentController : ControllerBase
             AppointmentDate = request.AppointmentDate,
             StartTime = request.StartTime,
             EndTime = request.EndTime,
+            Notes = request.Notes,
             Status = "Pending"
         };
 
@@ -245,11 +246,9 @@ public class AppointmentController : ControllerBase
 
         var customerId = Guid.Parse(userId);
 
-        // Find appointment
         var appointment = await _context.Appointments
             .FirstOrDefaultAsync(a =>
-                a.Id == id &&
-                a.CustomerId == customerId);
+                a.Id == id );
 
         if (appointment == null)
         {

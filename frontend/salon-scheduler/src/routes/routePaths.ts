@@ -9,4 +9,7 @@ export const ROUTES = {
 
   SERVICE: "/dashboard/service",
   ADD_SERVICE: "/dashboard/service/add",
+
+  APPOINTMENTS: "/dashboard/appointments",
+  ADD_APPOINTMENT: "/dashboard/appointments/add",
 } as const;
