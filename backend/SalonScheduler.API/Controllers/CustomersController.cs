@@ -77,4 +77,47 @@ public class CustomersController : ControllerBase
             new { id = customer.Id },
             response);
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateCustomer(
+    Guid id,
+    [FromBody] UpdateCustomerRequest request)
+    {
+        var customer = await _context.Customers
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+        if (customer == null)
+        {
+            return NotFound("Customer not found.");
+        }
+
+        var emailExists = await _context.Customers.AnyAsync(c =>
+            c.Email == request.Email &&
+            c.Id != id);
+
+        if (emailExists)
+        {
+            return BadRequest("Customer email already exists.");
+        }
+
+        customer.FirstName = request.FirstName;
+        customer.LastName = request.LastName;
+        customer.Email = request.Email;
+        customer.PhoneNumber = request.PhoneNumber;
+        customer.IsActive = request.IsActive;
+
+        await _context.SaveChangesAsync();
+
+        var response = new CustomerResponse
+        {
+            Id = customer.Id,
+            FirstName = customer.FirstName,
+            LastName = customer.LastName,
+            Email = customer.Email,
+            PhoneNumber = customer.PhoneNumber,
+            IsActive = customer.IsActive
+        };
+
+        return Ok(response);
+    }
 }
