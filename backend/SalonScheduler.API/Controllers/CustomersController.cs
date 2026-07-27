@@ -120,4 +120,22 @@ public class CustomersController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteCustomer(Guid id)
+    {
+        var customer = await _context.Customers
+            .FirstOrDefaultAsync(c => c.Id == id);
+
+        if (customer == null)
+        {
+            return NotFound("Customer not found.");
+        }
+
+        _context.Customers.Remove(customer);
+
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
 }
