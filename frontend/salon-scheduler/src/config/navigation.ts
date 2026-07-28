@@ -39,7 +39,7 @@ export const NAVIGATION_ITEMS = [
 
   {
     label: "Customers",
-    path: ROUTES.HOME,
+    path: ROUTES.CUSTOMERS,
     icon: UserRound,
     allowedRoles: ["Admin", "Staff"],
   },

@@ -9,6 +9,7 @@ import ServicePage from "@/view/service/ServicePage";
 import AddServicePage from "@/view/service/AddServicePage";
 import AppointmentPage from "@/view/appointment/AppointmentPage";
 import AddAppointmentPage from "@/view/appointment/AddAppointmentPage";
+import CustomerPage from "@/view/customer/CustomerPage";
 
 import { ROUTES } from "./routePaths";
 
@@ -38,8 +39,8 @@ export default function AppRouter() {
           />
           <Route path="staff/add" element={<AddStaffPage />} />
 
-          <Route 
-            path={ROUTES.SERVICE.replace("/dashboard/", "")} 
+          <Route
+            path={ROUTES.SERVICE.replace("/dashboard/", "")}
             element={<ServicePage />} />
           <Route path={ROUTES.ADD_SERVICE} element={<AddServicePage />} />
 
@@ -48,11 +49,16 @@ export default function AppRouter() {
             element={<AppointmentPage />}
           />
           <Route
-              path={ROUTES.ADD_APPOINTMENT}
-              element={<AddAppointmentPage />}
+            path={ROUTES.ADD_APPOINTMENT}
+            element={<AddAppointmentPage />}
+          />
+
+          <Route
+            path={ROUTES.CUSTOMERS.replace("/dashboard/", "")}
+            element={<CustomerPage />}
           />
         </Route>
-        
+
       </Routes>
     </BrowserRouter>
   );
