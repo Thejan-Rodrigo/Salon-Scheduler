@@ -10,6 +10,7 @@ import AddServicePage from "@/view/service/AddServicePage";
 import AppointmentPage from "@/view/appointment/AppointmentPage";
 import AddAppointmentPage from "@/view/appointment/AddAppointmentPage";
 import CustomerPage from "@/view/customer/CustomerPage";
+import AddCustomerPage from "@/view/customer/AddCustomerPage";
 
 import { ROUTES } from "./routePaths";
 
@@ -57,6 +58,7 @@ export default function AppRouter() {
             path={ROUTES.CUSTOMERS.replace("/dashboard/", "")}
             element={<CustomerPage />}
           />
+          <Route path="customers/add" element={<AddCustomerPage />} />
         </Route>
 
       </Routes>

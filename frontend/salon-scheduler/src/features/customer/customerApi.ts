@@ -11,9 +11,22 @@ export const customerApi = api.injectEndpoints({
 
             providesTags: ["Customer"],
         }),
+        createCustomer: builder.mutation<
+            void,
+            Omit<Customer, "id">
+        >({
+            query: (body) => ({
+                url: "/customers",
+                method: "POST",
+                data: body,
+            }),
+
+            invalidatesTags: ["Customer"],
+        }),
     }),
 });
 
 export const {
     useGetCustomersQuery,
+    useCreateCustomerMutation,
 } = customerApi;
