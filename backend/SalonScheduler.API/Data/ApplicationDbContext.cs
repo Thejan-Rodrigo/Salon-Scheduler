@@ -16,11 +16,15 @@ public class ApplicationDbContext : DbContext
     public DbSet<Appointment> Appointments { get; set; }
     public DbSet<Staff> Staff { get; set; }
     public DbSet<StaffSchedule> StaffSchedules { get; set; }
+    public DbSet<Customer> Customers => Set<Customer>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
+            .IsUnique();
+        modelBuilder.Entity<Customer>()
+            .HasIndex(c => c.Email)
             .IsUnique();
     }
 }
