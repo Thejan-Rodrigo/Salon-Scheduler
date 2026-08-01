@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "@/view/landingPage";
 import LoginPage from "@/view/login/LoginPage";
 import DashboardLayout from "@/layouts/DashboardLayout";
+import DashboardPage from "@/view/dashboard/DashboardPage";
 import StaffPage from "@/view/staff/StaffPage";
 import AddStaffPage from "@/view/staff/AddStaffPage";
 import ServicePage from "@/view/service/ServicePage";
@@ -34,6 +35,7 @@ export default function AppRouter() {
           path={ROUTES.DASHBOARD}
           element={<DashboardLayout />}
         >
+          <Route index element={<DashboardPage />} />
           <Route
             path={ROUTES.STAFF.replace("/dashboard/", "")}
             element={<StaffPage />}
