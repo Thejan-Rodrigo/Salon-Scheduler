@@ -2,19 +2,28 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SimplePieChart } from "@/components/ui/SimplePieChart";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { useGetStaffQuery } from "@/features/staff/staffApi";
+import { useGetCustomersQuery } from "@/features/customer/customerApi";
 
-// Mock data - in a real app, this would be fetched from the API
-const data = [
+// Mock data for appointments
+const appointmentData = [
   { name: "Pending", value: 15, color: "#f59e0b" },
   { name: "Finished", value: 45, color: "#10b981" },
   { name: "Cancelled", value: 5, color: "#ef4444" },
 ];
 
 export default function DashboardPage() {
-  const { data: staff = [], isLoading } = useGetStaffQuery();
+  const { data: staff = [], isLoading: isStaffLoading } = useGetStaffQuery();
+  const { data: customers = [], isLoading: isCustomersLoading } = useGetCustomersQuery();
 
   const activeStaff = staff.filter((s) => s.isActive);
   const activeStaffPercentage = staff.length > 0 ? (activeStaff.length / staff.length) * 100 : 0;
+
+  const activeCustomers = customers.filter((c) => c.isActive);
+  const inactiveCustomers = customers.filter((c) => !c.isActive);
+  const customerData = [
+    { name: "Active", value: activeCustomers.length, color: "#10b981" },
+    { name: "Inactive", value: inactiveCustomers.length, color: "#ef4444" },
+  ];
 
   return (
     <div className="space-y-6">
@@ -29,7 +38,20 @@ export default function DashboardPage() {
             <CardTitle>Appointment Status</CardTitle>
           </CardHeader>
           <CardContent className="flex justify-center items-center h-[300px]">
-            <SimplePieChart data={data} />
+            <SimplePieChart data={appointmentData} />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Customer Status</CardTitle>
+          </CardHeader>
+          <CardContent className="flex justify-center items-center h-[300px]">
+            {isCustomersLoading ? (
+                <p>Loading customers...</p>
+            ) : (
+                <SimplePieChart data={customerData} />
+            )}
           </CardContent>
         </Card>
 
@@ -38,7 +60,7 @@ export default function DashboardPage() {
             <CardTitle>Staff Availability</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col justify-center h-[300px] gap-4">
-            {isLoading ? (
+            {isStaffLoading ? (
               <p>Loading staff...</p>
             ) : (
               <ProgressBar
@@ -52,3 +74,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+

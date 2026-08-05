@@ -1,51 +1,73 @@
 import React from 'react';
 
-interface DataPoint {
+interface PieChartData {
   name: string;
   value: number;
   color: string;
 }
 
 interface SimplePieChartProps {
-  data: DataPoint[];
-  size?: number;
+  data: PieChartData[];
 }
 
-export const SimplePieChart: React.FC<SimplePieChartProps> = ({ data, size = 200 }) => {
-  const total = data.reduce((sum, item) => sum + item.value, 0);
+export function SimplePieChart({ data }: SimplePieChartProps) {
+  const total = data.reduce((acc, item) => acc + item.value, 0);
   let currentAngle = 0;
 
-  const getPath = (value: number) => {
-    const angle = (value / total) * 360;
-    const startAngle = currentAngle;
-    const endAngle = currentAngle + angle;
-    currentAngle += angle;
+  // SVG configuration
+  const size = 200;
+  const radius = 80;
+  const cx = size / 2;
+  const cy = size / 2;
 
-    const x1 = size / 2 + (size / 2) * Math.cos((Math.PI * startAngle) / 180);
-    const y1 = size / 2 + (size / 2) * Math.sin((Math.PI * startAngle) / 180);
-    const x2 = size / 2 + (size / 2) * Math.cos((Math.PI * endAngle) / 180);
-    const y2 = size / 2 + (size / 2) * Math.sin((Math.PI * endAngle) / 180);
-
+  const segments = data.map((item) => {
+    const percentage = item.value / total;
+    const angle = percentage * 360;
+    
+    // Calculate start and end coordinates
+    const startAngleRad = (currentAngle - 90) * (Math.PI / 180);
+    const endAngleRad = (currentAngle + angle - 90) * (Math.PI / 180);
+    
+    const x1 = cx + radius * Math.cos(startAngleRad);
+    const y1 = cy + radius * Math.sin(startAngleRad);
+    const x2 = cx + radius * Math.cos(endAngleRad);
+    const y2 = cy + radius * Math.sin(endAngleRad);
+    
     const largeArcFlag = angle > 180 ? 1 : 0;
-
-    return `M ${size / 2} ${size / 2} L ${x1} ${y1} A ${size / 2} ${size / 2} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
-  };
+    
+    // SVG Path data: Move to center, Line to start, Arc to end, Close path
+    const pathData = [
+      `M ${cx} ${cy}`,
+      `L ${x1} ${y1}`,
+      `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
+      `Z`
+    ].join(' ');
+    
+    const segment = {
+      path: pathData,
+      color: item.color,
+      name: item.name
+    };
+    
+    currentAngle += angle;
+    return segment;
+  });
 
   return (
-    <div className="flex flex-col items-center">
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="transform -rotate-90">
-        {data.map((item, index) => (
-          <path key={index} d={getPath(item.value)} fill={item.color} />
+    <div className="w-full h-full flex flex-col items-center justify-center">
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        {segments.map((seg, index) => (
+          <path key={index} d={seg.path} fill={seg.color} stroke="white" strokeWidth="2" />
         ))}
       </svg>
-      <div className="mt-4 flex gap-4">
+      <div className="flex gap-4 mt-2 text-sm">
         {data.map((item, index) => (
-          <div key={index} className="flex items-center gap-2">
+          <div key={index} className="flex items-center gap-1">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-            <span className="text-sm">{item.name}</span>
+            <span>{item.name}</span>
           </div>
         ))}
       </div>
     </div>
   );
-};
+}
