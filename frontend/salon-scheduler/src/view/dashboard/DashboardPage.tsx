@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SimplePieChart } from "@/components/ui/SimplePieChart";
 import { ProgressBar } from "@/components/ui/ProgressBar";
+import { DashboardHeader } from "@/components/layout/DashboardHeader";
 import { useGetStaffQuery } from "@/features/staff/staffApi";
 import { useGetCustomersQuery } from "@/features/customer/customerApi";
 
@@ -27,6 +28,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
+      <DashboardHeader />
       <div>
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <p className="text-muted-foreground">Overview of salon performance.</p>
