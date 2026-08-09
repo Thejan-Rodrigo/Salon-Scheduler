@@ -48,7 +48,8 @@ public class StaffScheduleController : ControllerBase
             DayOfWeek = request.DayOfWeek,
             StartTime = request.StartTime,
             EndTime = request.EndTime,
-            IsWorkingDay = request.IsWorkingDay
+            IsWorkingDay = request.IsWorkingDay,
+            CreatedAt = DateTime.UtcNow
         };
 
         _context.StaffSchedules.Add(schedule);

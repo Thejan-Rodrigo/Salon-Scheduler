@@ -51,7 +51,8 @@ public class ServiceController : ControllerBase
             Id = Guid.NewGuid(),
             Name = request.Name,
             Price = request.Price,
-            DurationMinutes = request.DurationMinutes
+            DurationMinutes = request.DurationMinutes,
+            CreatedAt = DateTime.UtcNow
         };
 
         _context.Services.Add(service);

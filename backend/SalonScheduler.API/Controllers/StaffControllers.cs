@@ -153,7 +153,8 @@ public class StaffController : ControllerBase
             FirstName = request.firstName,
             LastName = request.lastName,
             PhoneNumber = request.email,
-            Email = request.email
+            Email = request.email,
+            CreatedAt = DateTime.UtcNow
         };
 
         _context.Staff.Add(staff);

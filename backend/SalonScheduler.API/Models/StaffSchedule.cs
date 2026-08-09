@@ -15,4 +15,6 @@ public class StaffSchedule
     public TimeSpan EndTime { get; set; }
 
     public bool IsWorkingDay { get; set; } = true;
+    
+    public DateTime CreatedAt { get; set; }
 }
