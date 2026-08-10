@@ -28,7 +28,10 @@ public class AppointmentController : ControllerBase
                 System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
         if (userId == null)
-            return Unauthorized();
+            return Unauthorized(new
+            {
+                message = "Your session is invalid or has expired. Please log in again."
+            });
 
         var customerId = Guid.Parse(userId);
 
@@ -64,7 +67,10 @@ public class AppointmentController : ControllerBase
 
         if (appointment == null)
         {
-            return NotFound("Appointment not found");
+            return NotFound(new
+            {
+                message = "Appointment not found"
+            });
         }
 
         var response = new AppointmentDetailsResponse
@@ -169,7 +175,10 @@ public class AppointmentController : ControllerBase
             c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
         if (userId == null)
-            return Unauthorized();
+            return Unauthorized(new
+            {
+                message = "Your session is invalid or has expired. Please log in again."
+            });
 
         var appointment = new Appointment
         {
@@ -207,7 +216,10 @@ public class AppointmentController : ControllerBase
 
         if (appointment == null)
         {
-            return NotFound("Appointment not found");
+            return NotFound(new
+            {
+                message = "Appointment not found"
+            });
         }
 
         var validStatuses = new[]
@@ -254,7 +266,10 @@ public class AppointmentController : ControllerBase
 
         if (appointment == null)
         {
-            return NotFound("Appointment not found");
+            return NotFound(new
+            {
+                message = "Appointment not found"
+            });
         }
 
         appointment.Status = AppointmentStatus.Cancelled;
