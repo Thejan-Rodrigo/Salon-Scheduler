@@ -29,7 +29,10 @@ public class AuthController : ControllerBase
 
         if (existingUser != null)
         {
-            return BadRequest("Email already exists.");
+            return BadRequest(new
+            {
+                Message = "Email already exists."
+            });
         }
 
         var user = new User
@@ -61,17 +64,26 @@ public class AuthController : ControllerBase
             .FirstOrDefaultAsync(u => u.Email == request.Email);
 
         if (user == null)
-            return BadRequest("Invalid email or password");
+            return BadRequest(new
+            {
+                Message = "Invalid email or password"
+            });
 
         if (!user.IsActive)
         {
-            return BadRequest("Account is inactive");
+            return BadRequest(new
+            {
+                Message = "Account is inactive"
+            });
         }
 
         var validPassword = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
 
         if (!validPassword)
-            return BadRequest("Invalid email or password");
+            return BadRequest(new
+            {
+                Message = "Invalid email or password"
+            });
 
         var token = _jwtService.GenerateToken(user);
 
