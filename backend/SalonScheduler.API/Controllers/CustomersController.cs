@@ -44,7 +44,10 @@ public class CustomersController : ControllerBase
 
         if (emailExists)
         {
-            return BadRequest("Customer email already exists.");
+            return BadRequest(new
+            {
+                Message = "Customer email already exists."
+            });
         }
 
         var customer = new Customer
@@ -88,7 +91,10 @@ public class CustomersController : ControllerBase
 
         if (customer == null)
         {
-            return NotFound("Customer not found.");
+            return NotFound(new
+            {
+                Message = "Customer not found."
+            });
         }
 
         var emailExists = await _context.Customers.AnyAsync(c =>
@@ -97,7 +103,10 @@ public class CustomersController : ControllerBase
 
         if (emailExists)
         {
-            return BadRequest("Customer email already exists.");
+            return BadRequest(new
+            {
+                Message = "Customer email already exists."
+            });
         }
 
         customer.FirstName = request.FirstName;
@@ -129,7 +138,10 @@ public class CustomersController : ControllerBase
 
         if (customer == null)
         {
-            return NotFound("Customer not found.");
+            return NotFound(new
+            {
+                Message = "Customer not found."
+            });
         }
 
         _context.Customers.Remove(customer);
