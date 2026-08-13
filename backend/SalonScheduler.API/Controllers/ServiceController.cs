@@ -35,7 +35,10 @@ public class ServiceController : ControllerBase
 
         if (service == null)
         {
-            return NotFound("Service not found");
+            return NotFound(new
+            {
+                Message = "Service not found"
+            });
         }
 
         return Ok(service);
@@ -76,7 +79,10 @@ public class ServiceController : ControllerBase
 
         if (service == null)
         {
-            return NotFound("Service not found");
+            return NotFound(new
+            {
+                Message = "Service not found"
+            });
         }
 
         service.Name = request.Name;
@@ -96,7 +102,10 @@ public class ServiceController : ControllerBase
 
         if (service == null)
         {
-            return NotFound("Service not found");
+            return NotFound(new
+            {
+                Message = "Service not found"
+            });
         }
 
         service.IsActive = false;
