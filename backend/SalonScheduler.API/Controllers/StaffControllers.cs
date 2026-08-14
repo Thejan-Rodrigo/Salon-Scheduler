@@ -37,7 +37,10 @@ public class StaffController : ControllerBase
 
         if (staff == null)
         {
-            return NotFound("Staff member not found");
+            return NotFound(new
+            {
+                Message = "Staff member not found"
+            });
         }
 
         return Ok(staff);
@@ -113,7 +116,10 @@ public class StaffController : ControllerBase
 
         if (!staffExists)
         {
-            return NotFound("Staff member not found");
+            return NotFound(new
+            {
+                Message = "Staff member not found"
+            });
         }
 
         var appointments = await _context.Appointments
@@ -178,7 +184,10 @@ public class StaffController : ControllerBase
 
         if (staff == null)
         {
-            return NotFound("Staff member not found");
+            return NotFound(new
+            {
+                Message = "Staff member not found"
+            });
         }
 
         staff.FirstName = request.FirstName;
@@ -198,7 +207,10 @@ public class StaffController : ControllerBase
 
         if (staff == null)
         {
-            return NotFound("Staff member not found");
+            return NotFound(new
+            {
+                Message = "Staff member not found"
+            });
         }
 
         staff.IsActive = false;
