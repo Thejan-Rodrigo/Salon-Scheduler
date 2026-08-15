@@ -37,8 +37,10 @@ public class StaffScheduleController : ControllerBase
     {
         if (request.StartTime >= request.EndTime)
         {
-            return BadRequest(
-                "Start time must be earlier than end time");
+            return BadRequest(new
+            {
+                Message = "Start time must be earlier than end time"
+            });
         }
 
         var schedule = new StaffSchedule
@@ -69,13 +71,18 @@ public class StaffScheduleController : ControllerBase
 
         if (schedule == null)
         {
-            return NotFound("Schedule not found");
+            return NotFound(new
+            {
+                Message = "Schedule not found"
+            });
         }
 
         if (request.StartTime >= request.EndTime)
         {
-            return BadRequest(
-                "Start time must be earlier than end time");
+            return BadRequest(new
+            {
+                Message = "Start time must be earlier than end time"
+            });
         }
 
         schedule.DayOfWeek = request.DayOfWeek;
@@ -96,7 +103,10 @@ public class StaffScheduleController : ControllerBase
 
         if (schedule == null)
         {
-            return NotFound("Schedule not found");
+            return NotFound(new
+            {
+                Message = "Schedule not found"
+            });
         }
 
         _context.StaffSchedules.Remove(schedule);
