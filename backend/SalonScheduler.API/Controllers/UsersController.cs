@@ -58,7 +58,10 @@ public class UsersController : ControllerBase
 
         if (user == null)
         {
-            return NotFound("User not found");
+            return NotFound(new
+            {
+                Message = "User not found"
+            });
         }
 
         return Ok(user);
@@ -74,7 +77,10 @@ public class UsersController : ControllerBase
 
         if (user == null)
         {
-            return NotFound("User not found");
+            return NotFound(new
+            {
+                Message = "User not found"
+            });
         }
 
         user.IsActive = request.IsActive;
