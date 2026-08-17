@@ -169,16 +169,31 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> BookAppointment([FromBody] CreateAppointmentRequest request)
+    public async Task<IActionResult> BookAppointment(
+    [FromBody] CreateAppointmentRequest request)
     {
-        var userId = User.Claims.FirstOrDefault(c => 
+        var userId = User.Claims.FirstOrDefault(c =>
             c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
         if (userId == null)
+        {
             return Unauthorized(new
             {
                 message = "Your session is invalid or has expired. Please log in again."
             });
+        }
+
+        // Validate Staff ID
+        var staffExists = await _context.Staff
+            .AnyAsync(s => s.Id == request.StaffId);
+
+        if (!staffExists)
+        {
+            return BadRequest(new
+            {
+                message = "Invalid staff ID."
+            });
+        }
 
         var appointment = new Appointment
         {
@@ -191,11 +206,11 @@ public class AppointmentController : ControllerBase
             EndTime = request.EndTime,
             CreatedAt = DateTime.UtcNow,
             Notes = request.Notes,
-            
             Status = "Pending"
         };
 
         _context.Appointments.Add(appointment);
+
         await _context.SaveChangesAsync();
 
         return Ok(new
@@ -262,7 +277,7 @@ public class AppointmentController : ControllerBase
 
         var appointment = await _context.Appointments
             .FirstOrDefaultAsync(a =>
-                a.Id == id );
+                a.Id == id);
 
         if (appointment == null)
         {
