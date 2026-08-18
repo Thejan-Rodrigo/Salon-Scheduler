@@ -195,6 +195,18 @@ public class AppointmentController : ControllerBase
             });
         }
 
+        // Validate Service ID
+        var serviceExists = await _context.Services
+            .AnyAsync(s => s.Id == request.ServiceId);
+
+        if (!serviceExists)
+        {
+            return BadRequest(new
+            {
+                message = "Invalid service ID."
+            });
+        }
+
         var appointment = new Appointment
         {
             Id = Guid.NewGuid(),
