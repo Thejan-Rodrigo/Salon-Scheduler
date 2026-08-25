@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace SalonScheduler.API.Models;
 
 public class Staff
@@ -10,6 +12,7 @@ public class Staff
 
     public string PhoneNumber { get; set; } = string.Empty;
 
+    [EmailAddress]
     public string Email { get; set; } = string.Empty;
 
     public bool IsActive { get; set; } = true;
