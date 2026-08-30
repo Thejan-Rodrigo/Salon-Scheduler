@@ -131,7 +131,9 @@ public class CustomersController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCustomer(Guid id)
+    public async Task<IActionResult> DeleteCustomer(
+    Guid id,
+    [FromQuery] bool permanentDelete = false)
     {
         var customer = await _context.Customers
             .FirstOrDefaultAsync(c => c.Id == id);
@@ -144,7 +146,16 @@ public class CustomersController : ControllerBase
             });
         }
 
-        _context.Customers.Remove(customer);
+        if (permanentDelete)
+        {
+            // Permanently remove customer from database
+            _context.Customers.Remove(customer);
+        }
+        else
+        {
+            // Soft delete
+            customer.IsActive = false;
+        }
 
         await _context.SaveChangesAsync();
 
